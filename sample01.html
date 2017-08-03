@@ -4,8 +4,11 @@
   <title></title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.6.1/riot+compiler.js"></script>
   <script src="https://rawgit.com/riot/route/master/dist/route.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 </head>
 <body>
+  <script type="riot/tag" src="sample3.tag"></script>
+  <script type="riot/tag" src="sample3.css"></script>
   <h3>Test H1 Tag</h3>
   <p>Ref: http://riotjs.com/api/route/#routebasebase</p>
   <layout></layout>
@@ -16,10 +19,12 @@
       <nav>
         <a href="#page1">page1</a>
         <a href="#page2">page2</a>
+        <a href="#sample3">sample3</a>
       </nav>
       
       <sample if={ uri == 'page1' }></sample>
       <sample2 if={ uri == 'page2' }></sample2>
+      <sample3 if={ uri == 'sample3' }></sample3>
       
       console.log('layout init');
       let self = this;
@@ -27,6 +32,7 @@
       route(function(uri) {
         // "" is default page.
         if(uri === "") uri = 'page1';
+        $('[view]').remove();
         self.uri = uri;
         self.update();
       });
@@ -101,10 +107,13 @@
     }
   </style>
   <script>
-    riot.compile(function() {
-        riot.mount('sample');
-        riot.mount('sample2');
-        riot.mount('layout');
+    riot.compile(function(){
+        // riot.mount('sample');
+        // riot.mount('sample2');
+        // riot.mount('sample3');
+        // riot.mount('layout');
+        riot.mount('*');  // written by wildcard way
+
         route.start(true);
         route.base('#');
     });
