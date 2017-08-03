@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.6.1/riot+compiler.js"></script>
+  <script src="https://rawgit.com/riot/route/master/dist/route.js"></script>
+</head>
+<body>
+  <h3>Test H1 Tag</h3>
+  <p>Ref: http://riotjs.com/api/route/#routebasebase</p>
+  <layout></layout>
+  <script type="riot/tag">
+    <!-- Register Routing Table & Basic Layout Template -->
+    <layout>
+      <h4>Current URL: http://localhost/#{ uri }</h4>
+      <nav>
+        <a href="#page1">page1</a>
+        <a href="#page2">page2</a>
+      </nav>
+      
+      <sample if={ uri == 'page1' }></sample>
+      <sample2 if={ uri == 'page2' }></sample2>
+      
+      console.log('layout init');
+      let self = this;
+      self.uri = 'page1';
+      route(function(uri) {
+        // "" is default page.
+        if(uri === "") uri = 'page1';
+        self.uri = uri;
+        self.update();
+      });
+    </layout>
+    
+    <!-- Particial Views Start Here -->
+    <sample>
+      <h3>{ message }</h3>
+      <ul>
+        <li each={ obj, index in techs }>
+          { obj.name }
+          <input
+            ref="test"
+            onkeyup={ parent.edit(index) }
+            value={ obj.name } />
+        </li>
+      </ul>
+      <style>
+        :scope { font-size: 2rem }
+        ul { color: #999 }
+        h3 { color: red }
+      </style>
+
+      console.log('page1 init');
+      this.refs.test = [];
+      this.message = 'Hello, Riot!'
+      this.techs = [
+        { name: 'HTML!' },
+        { name: 'JavaScript' },
+        { name: 'CSS' }
+      ]
+      this.edit = function(index){
+        return function(e){
+          console.log(this.parent.refs.test[index].value);
+          console.log(this.parent.refs.test);
+          e.item.obj.name = e.target.value;
+        }
+      }
+    </sample>
+    
+    <sample2>
+      <h3>{ 789 }</h3>
+      
+      console.log('page2 init');
+    </sample2>
+  </script>
+  <style>
+    // global! This will apply to custom element of riot.js.
+    input {
+      color: blue;
+    }
+
+    body {
+      font-size: 8pt;
+    }
+
+    h3 {
+      color: green;
+    }
+
+    nav {
+      display: block;
+      border-bottom: 1px solid #666;
+      padding: 0 0 1em;
+    }
+    nav > a {
+      display: inline-block;
+      padding: 0 .8em;
+    }
+    nav > a:not(:first-child) {
+      border-left: 1px solid #eee;
+    }
+  </style>
+  <script>
+    riot.compile(function() {
+        riot.mount('sample');
+        riot.mount('sample2');
+        riot.mount('layout');
+        route.start(true);
+        route.base('#');
+    });
+  </script>
+</body>
+</html>
