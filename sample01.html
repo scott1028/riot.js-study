@@ -8,7 +8,7 @@
 </head>
 <body>
   <script type="riot/tag" src="sample3.tag"></script>
-  <script type="riot/tag" src="sample3.css"></script>
+  <link rel="stylesheet" href="app.css" />
   <h3>Test H1 Tag</h3>
   <p>Ref: http://riotjs.com/api/route/#routebasebase</p>
   <layout></layout>
@@ -32,7 +32,7 @@
       route(function(uri) {
         // "" is default page.
         if(uri === "") uri = 'page1';
-        $('[view]').remove();
+        // $('[view]').remove();
         self.uri = uri;
         self.update();
       });
